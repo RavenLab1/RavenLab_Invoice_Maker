@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#aed349">
+<title>Raven Lab — صانع الفواتير</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Arabic:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--brand:#aed349;--brand2:#9cc03d;--bg:#0f1117;--soft:#171b23;--card:#11151c;--text:#f8fafc;--muted:#a7b0bf;--border:#2b3240;--danger:#ef4444;--shadow:0 24px 60px rgba(0,0,0,.45)}
+*{box-sizing:border-box;margin:0;padding:0}
+body{min-height:100vh;font-family:"Noto Sans Arabic",system-ui,sans-serif;background:radial-gradient(circle at 90% -10%,rgba(174,211,73,.14),transparent 30%),linear-gradient(180deg,#171b23 0%,#0f1117 100%);color:var(--text);padding:16px;line-height:1.6}
+button,input,textarea{font:inherit}button{cursor:pointer}
+.app{width:min(1200px,100%);margin:auto}
+.top{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:16px}
+.brand{display:flex;align-items:center;gap:11px}.mark{width:44px;height:44px;border-radius:14px;background:var(--brand);color:#111827;display:grid;place-items:center;font-weight:900;box-shadow:0 10px 24px rgba(174,211,73,.22)}
+.brand h1{font-size:1.1rem}.brand p{font-size:.78rem;color:var(--muted)}
+.chip{border:1px solid rgba(174,211,73,.22);background:rgba(174,211,73,.07);color:var(--brand);padding:7px 10px;border-radius:999px;font-size:.75rem;font-weight:800;white-space:nowrap}
+.layout{display:grid;grid-template-columns:minmax(0,1fr) minmax(390px,.88fr);gap:18px;align-items:start}
+.card,.previewShell{background:rgba(17,21,28,.94);border:1px solid var(--border);border-radius:24px;box-shadow:var(--shadow)}
+.cardHead{padding:19px 20px 13px;border-bottom:1px solid var(--border)}.cardHead h2{color:var(--brand);font-size:1.05rem}.cardHead p{color:var(--muted);font-size:.8rem}
+.cardBody{padding:19px 20px 21px}.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.field{display:grid;gap:6px}.full{grid-column:1/-1}
+label{font-weight:700;font-size:.88rem;color:#dce3ec}
+input,textarea{width:100%;border:1px solid var(--border);background:#0f131a;color:var(--text);border-radius:14px;padding:12px 14px;outline:none;transition:.18s}
+input{min-height:48px}textarea{min-height:86px;resize:vertical}input:focus,textarea:focus{border-color:var(--brand);box-shadow:0 0 0 4px rgba(174,211,73,.1)}::placeholder{color:#616b79}
+.divider{height:1px;background:var(--border);margin:18px 0}
+.sectionTitle{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:10px}
+.sectionTitle h3{font-size:.95rem;color:#e7edf5}.hint{font-size:.73rem;color:#7f8998}
+.items{display:grid;gap:10px}
+.itemCard{border:1px solid var(--border);background:#0d1117;border-radius:16px;padding:12px;display:grid;gap:10px}
+.itemTop{display:flex;justify-content:space-between;align-items:center;gap:8px}
+.itemIndex{font-weight:800;color:var(--brand);font-size:.85rem}
+.removeItem{border:0;background:rgba(239,68,68,.1);color:#ff9f9f;border:1px solid rgba(239,68,68,.22);border-radius:10px;padding:7px 10px;font-size:.75rem;font-weight:800}
+.itemGrid{display:grid;grid-template-columns:1.3fr .55fr .8fr .75fr;gap:8px}
+.itemGrid .details{grid-column:1/-1}
+.addItem{width:100%;margin-top:10px;border:1px dashed rgba(174,211,73,.35);background:rgba(174,211,73,.06);color:var(--brand);border-radius:14px;min-height:48px;font-weight:800}
+.actions,.previewActions{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.btn{border:0;border-radius:14px;min-height:50px;padding:11px 14px;font-weight:800;transition:.18s}.btn:active{transform:scale(.985)}
+.secondary{background:#171b23;color:var(--text);border:1px solid var(--border)}.danger{background:rgba(239,68,68,.1);color:#ffb4b4;border:1px solid rgba(239,68,68,.25)}.wa{background:#25D366;color:#fff}.print{background:#f8fafc;color:#111827}
+.previewWrap{position:sticky;top:16px}.previewShell{padding:16px;background:#0b0e13}
+.invoice{background:#fff;color:#111827;border-radius:18px;padding:23px;min-height:580px}
+.invHead{display:flex;justify-content:space-between;gap:14px;padding-bottom:15px;border-bottom:2px solid #111827}.invBrand{display:flex;gap:9px;align-items:center}.invMark{width:40px;height:40px;border-radius:12px;background:#aed349;display:grid;place-items:center;font-weight:900}.invBrand strong{display:block}.invBrand span{display:block;font-size:.68rem;color:#64748b}.meta{text-align:left;direction:ltr;font-size:.72rem;color:#64748b}.meta b{display:block;color:#111827}
+.invTitle{text-align:center;font-size:1.15rem;font-weight:900;margin:17px 0 13px}
+.box{border:1px solid #e5e7eb;border-radius:13px;overflow:hidden;margin-top:11px}.row{display:grid;grid-template-columns:115px 1fr;gap:10px;padding:9px 11px;border-bottom:1px solid #eef0f3;font-size:.82rem}.row:last-child{border-bottom:0}.key{color:#64748b;font-weight:700}.val{font-weight:800;white-space:pre-wrap;word-break:break-word}
+.productsTable{margin-top:12px;border:1px solid #e5e7eb;border-radius:13px;overflow:hidden}
+.productsHeader,.productLine{display:grid;grid-template-columns:1.4fr .55fr .75fr .85fr;gap:8px;align-items:center;padding:9px 10px}
+.productsHeader{background:#f8fafc;color:#64748b;font-size:.72rem;font-weight:800;border-bottom:1px solid #e5e7eb}
+.productLine{font-size:.78rem;border-bottom:1px solid #eef0f3}.productLine:last-child{border-bottom:0}
+.productLine .name{font-weight:800}.productLine .sub{display:block;font-size:.68rem;color:#64748b;font-weight:500;margin-top:2px}
+.total{margin-top:14px;border-radius:14px;padding:14px;background:#111827;color:#fff;display:flex;justify-content:space-between;gap:12px;align-items:center}.total span{font-size:.84rem;color:#cbd5e1}.total b{font-size:1.4rem;color:#aed349}
+.note{margin-top:13px;background:#f8fafc;border:1px solid #e5e7eb;border-radius:12px;padding:10px 12px;color:#475569;font-size:.74rem;min-height:42px;white-space:pre-wrap}.footer{margin-top:18px;padding-top:10px;border-top:1px solid #e5e7eb;display:flex;justify-content:space-between;color:#94a3b8;font-size:.65rem}
+.previewActions{margin-top:11px}.mobileBar{display:none}.toast{position:fixed;left:50%;bottom:22px;transform:translateX(-50%) translateY(18px);background:#090b10;border:1px solid rgba(174,211,73,.28);color:#fff;border-radius:999px;padding:9px 14px;font-weight:800;font-size:.82rem;opacity:0;pointer-events:none;transition:.2s;z-index:9999}.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+@media(max-width:900px){body{padding:11px}.layout{grid-template-columns:1fr}.previewWrap{position:static}}
+@media(max-width:700px){.itemGrid{grid-template-columns:1fr 1fr}.itemGrid .prod{grid-column:1/-1}.itemGrid .details{grid-column:1/-1}}
+@media(max-width:640px){body{padding:8px 8px 92px}.grid{grid-template-columns:1fr}.full{grid-column:auto}.top{align-items:flex-start}.brand h1{font-size:.96rem}.brand p{font-size:.68rem}.chip{font-size:.64rem}.card,.previewShell{border-radius:20px}.cardHead{padding:15px 14px 11px}.cardBody{padding:14px}.invoice{padding:16px;border-radius:14px;min-height:0}.row{grid-template-columns:92px 1fr;font-size:.77rem}.productsHeader,.productLine{grid-template-columns:1.35fr .45fr .7fr .75fr;font-size:.7rem}.previewActions{display:none}.mobileBar{display:grid;grid-template-columns:1.15fr .85fr;gap:8px;position:fixed;left:0;right:0;bottom:0;padding:9px 10px calc(9px + env(safe-area-inset-bottom));background:rgba(15,17,23,.95);backdrop-filter:blur(16px);border-top:1px solid var(--border);z-index:5000}.mobileBar .btn{min-height:54px}}
+@media print{@page{size:A4;margin:14mm}html,body{background:#fff!important;padding:0!important;margin:0!important}body *{visibility:hidden!important}#printInvoice,#printInvoice *{visibility:visible!important}#printInvoice{position:absolute!important;inset:0!important;width:100%!important;min-height:auto!important;box-shadow:none!important;border-radius:0!important;padding:0!important}}
+</style>
+</head>
+<body>
+<main class="app">
+<div class="top"><div class="brand"><div class="mark">R</div><div><h1>Raven Lab — صانع الفواتير</h1><p>يدعم أكثر من منتج في نفس الطلب</p></div></div><div class="chip" id="invoiceChip">فاتورة جديدة</div></div>
+
+<section class="layout">
+<div class="card">
+<div class="cardHead"><h2>بيانات الطلب</h2><p>أضف أي عدد من المنتجات داخل نفس الفاتورة.</p></div>
+<div class="cardBody">
+<div class="grid">
+<div class="field"><label>الاسم</label><input id="name" placeholder="اسم الزبون / الشركة"></div>
+<div class="field"><label>الرقم</label><input id="phone" inputmode="tel" placeholder="07XXXXXXXXX"></div>
+<div class="field full"><label>العنوان</label><textarea id="address" placeholder="المحافظة، المنطقة، أقرب نقطة دالة"></textarea></div>
+</div>
+
+<div class="divider"></div>
+<div class="sectionTitle"><div><h3>المنتجات</h3><div class="hint">لكل منتج: الاسم، العدد، اللون، السعر، والتفاصيل.</div></div></div>
+<div id="items" class="items"></div>
+<button class="addItem" type="button" id="addItemBtn">＋ إضافة منتج آخر</button>
+
+<div class="divider"></div>
+<div class="grid">
+<div class="field full"><label>ملاحظات الطلب</label><textarea id="notes" placeholder="أي ملاحظة عامة على الطلب أو التسليم"></textarea></div>
+</div>
+
+<div class="divider"></div>
+<div class="actions">
+<button class="btn secondary" type="button" id="copyBtn">نسخ نص الفاتورة</button>
+<button class="btn danger" type="button" id="newBtn">فاتورة جديدة</button>
+</div>
+</div>
+</div>
+
+<div class="previewWrap">
+<div class="previewShell">
+<div id="printInvoice" class="invoice">
+<div class="invHead"><div class="invBrand"><div class="invMark">R</div><div><strong>Raven Lab</strong><span>Design & Manufacturing Studio</span></div></div><div class="meta"><b id="pId">—</b><span id="pDate">—</span></div></div>
+<div class="invTitle">فاتورة طلب</div>
+<div class="box">
+<div class="row"><div class="key">الاسم</div><div class="val" id="pName">—</div></div>
+<div class="row"><div class="key">الرقم</div><div class="val" id="pPhone">—</div></div>
+<div class="row"><div class="key">العنوان</div><div class="val" id="pAddress">—</div></div>
+</div>
+
+<div class="productsTable">
+<div class="productsHeader"><div>المنتج</div><div>العدد</div><div>اللون</div><div>السعر</div></div>
+<div id="pProducts"></div>
+</div>
+
+<div class="total"><span>السعر الإجمالي للطلب</span><b id="pTotal">0 د.ع</b></div>
+<div class="note" id="pNotes">لا توجد ملاحظات.</div>
+<div class="footer"><span>Raven Lab</span><span>شكراً لثقتكم بنا</span></div>
+</div>
+<div class="previewActions"><button class="btn wa" type="button" id="waBtn">إرسال عبر واتساب</button><button class="btn print" type="button" id="printBtn">طباعة / PDF</button></div>
+</div>
+</div>
+</section>
+</main>
+
+<div class="mobileBar"><button class="btn wa" type="button" id="waMobile">واتساب</button><button class="btn print" type="button" id="printMobile">PDF / طباعة</button></div>
+<div class="toast" id="toast"></div>
+
+<script>
+const RAVEN_WHATSAPP="9647885817890",DRAFT_KEY="ravenlab_invoice_draft_v2",COUNT_KEY="ravenlab_invoice_count_v2";
+const $=id=>document.getElementById(id);
+const base={name:$("name"),phone:$("phone"),address:$("address"),notes:$("notes")};
+let invoiceId="",items=[];
+
+function money(v){const n=Number(v||0);return `${Math.round(Number.isFinite(n)?n:0).toLocaleString("en-US")} د.ع`}
+function txt(v){const s=String(v??"").trim();return s||"—"}
+function now(){return new Intl.DateTimeFormat("ar-IQ",{year:"numeric",month:"2-digit",day:"2-digit",hour:"2-digit",minute:"2-digit"}).format(new Date())}
+function makeId(inc=false){const d=new Date(),stamp=`${d.getFullYear()}${String(d.getMonth()+1).padStart(2,"0")}${String(d.getDate()).padStart(2,"0")}`;let n=Number(localStorage.getItem(COUNT_KEY)||0);if(inc){n++;localStorage.setItem(COUNT_KEY,String(n))}if(n<1){n=1;localStorage.setItem(COUNT_KEY,"1")}return `RL-${stamp}-${String(n).padStart(3,"0")}`}
+function newItem(data={}){return {id:crypto.randomUUID?crypto.randomUUID():String(Date.now()+Math.random()),product:data.product||"",qty:Number(data.qty||1),color:data.color||"",price:Number(data.price||0),details:data.details||""}}
+function total(){return items.reduce((s,i)=>s+Number(i.price||0),0)}
+function showToast(t){const e=$("toast");e.textContent=t;e.classList.add("show");clearTimeout(showToast.timer);showToast.timer=setTimeout(()=>e.classList.remove("show"),1700)}
+
+function renderItems(){
+ const wrap=$("items");wrap.innerHTML="";
+ items.forEach((it,index)=>{
+   const el=document.createElement("div");el.className="itemCard";el.dataset.id=it.id;
+   el.innerHTML=`<div class="itemTop"><span class="itemIndex">منتج ${index+1}</span>${items.length>1?'<button type="button" class="removeItem">حذف</button>':''}</div>
+   <div class="itemGrid">
+    <div class="field prod"><label>نوع المنتج</label><input data-k="product" value="${escapeHtml(it.product)}" placeholder="مثال: ميدالية جيم"></div>
+    <div class="field"><label>العدد</label><input data-k="qty" type="number" min="1" value="${it.qty}"></div>
+    <div class="field"><label>اللون</label><input data-k="color" value="${escapeHtml(it.color)}" placeholder="أسود"></div>
+    <div class="field"><label>سعر هذا المنتج</label><input data-k="price" type="number" min="0" step="250" value="${it.price||""}" placeholder="0"></div>
+    <div class="field details"><label>تفاصيل المنتج</label><textarea data-k="details" placeholder="مثال: وجه واحد / طباعة شعار...">${escapeHtml(it.details)}</textarea></div>
+   </div>`;
+   el.addEventListener("input",e=>{const k=e.target.dataset.k;if(!k)return;const item=items.find(x=>x.id===it.id);item[k]=(k==="qty"||k==="price")?Number(e.target.value||0):e.target.value;update()});
+   el.querySelector(".removeItem")?.addEventListener("click",()=>{items=items.filter(x=>x.id!==it.id);renderItems();update()});
+   wrap.appendChild(el);
+ });
+}
+function escapeHtml(s){return String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#039;"}[c]))}
+
+function renderPreview(){
+ $("pName").textContent=txt(base.name.value);$("pPhone").textContent=txt(base.phone.value);$("pAddress").textContent=txt(base.address.value);
+ $("pNotes").textContent=base.notes.value.trim()||"لا توجد ملاحظات.";$("pId").textContent=invoiceId;$("invoiceChip").textContent=invoiceId;$("pDate").textContent=now();$("pTotal").textContent=money(total());
+ const p=$("pProducts");p.innerHTML="";
+ items.forEach(i=>{const row=document.createElement("div");row.className="productLine";row.innerHTML=`<div class="name">${escapeHtml(txt(i.product))}${i.details.trim()?`<span class="sub">${escapeHtml(i.details)}</span>`:""}</div><div>${i.qty||1}</div><div>${escapeHtml(txt(i.color))}</div><div>${money(i.price)}</div>`;p.appendChild(row)});
+ save();
+}
+function update(){renderPreview()}
+function save(){localStorage.setItem(DRAFT_KEY,JSON.stringify({invoiceId,base:Object.fromEntries(Object.entries(base).map(([k,e])=>[k,e.value])),items}))}
+
+function message(){
+ const lines=["RAVEN LAB — فاتورة طلب","====================",`رقم الفاتورة: ${invoiceId}`,`التاريخ: ${now()}`,"",`الاسم: ${txt(base.name.value)}`,`الرقم: ${txt(base.phone.value)}`,`العنوان: ${txt(base.address.value)}`,"","المنتجات:"];
+ items.forEach((i,n)=>{lines.push(`${n+1}) ${txt(i.product)} — العدد: ${i.qty||1} — اللون: ${txt(i.color)} — السعر: ${money(i.price)}`);if(i.details.trim())lines.push(`   التفاصيل: ${i.details.trim()}`)});
+ lines.push("",`ملاحظات: ${base.notes.value.trim()||"لا توجد"}`,`السعر الإجمالي: ${money(total())}`,"====================");
+ return lines.join("\n");
+}
+async function copyInvoice(){const t=message();try{await navigator.clipboard.writeText(t)}catch{const a=document.createElement("textarea");a.value=t;document.body.appendChild(a);a.select();document.execCommand("copy");a.remove()}showToast("تم نسخ نص الفاتورة")}
+function sendWA(){window.open(`https://wa.me/${RAVEN_WHATSAPP}?text=${encodeURIComponent(message())}`,"_blank","noopener")}
+function newInvoice(){if(!confirm("إنشاء فاتورة جديدة ومسح البيانات الحالية؟"))return;Object.values(base).forEach(e=>e.value="");items=[newItem()];invoiceId=makeId(true);localStorage.removeItem(DRAFT_KEY);renderItems();update();base.name.focus();showToast("تم إنشاء فاتورة جديدة")}
+function load(){try{const s=JSON.parse(localStorage.getItem(DRAFT_KEY)||"{}");Object.entries(base).forEach(([k,e])=>{if(s.base?.[k]!=null)e.value=s.base[k]});invoiceId=s.invoiceId||makeId(false);items=Array.isArray(s.items)&&s.items.length?s.items.map(newItem):[newItem()]}catch{invoiceId=makeId(false);items=[newItem()]}renderItems();update()}
+
+Object.values(base).forEach(e=>{e.addEventListener("input",update);e.addEventListener("change",update)});
+$("addItemBtn").onclick=()=>{items.push(newItem());renderItems();update()};
+$("copyBtn").onclick=copyInvoice;$("newBtn").onclick=newInvoice;$("waBtn").onclick=sendWA;$("waMobile").onclick=sendWA;$("printBtn").onclick=()=>window.print();$("printMobile").onclick=()=>window.print();
+load();
+</script>
+</body>
+</html>
