@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#aed349">
-<title>Raven Lab — صانع الفواتير</title>
+<title>Raven Lab — صانع الفواتير V3.2</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Arabic:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -55,18 +55,18 @@ input,select{min-height:48px}textarea{min-height:86px;resize:vertical}input:focu
 .saveBar{display:grid;grid-template-columns:1.2fr .8fr;gap:10px;margin-top:10px}
 .unsaved{font-size:.72rem;color:#fbbf24;font-weight:800;margin-top:8px;text-align:center;min-height:20px}
 .historyCard{background:rgba(17,21,28,.94);border:1px solid var(--border);border-radius:24px;box-shadow:var(--shadow);overflow:hidden}
-.historyToolbar{padding:14px;border-bottom:1px solid var(--border);display:grid;grid-template-columns:1fr 180px auto;gap:10px}
+.historyToolbar{padding:14px;border-bottom:1px solid var(--border);display:grid;grid-template-columns:minmax(220px,1.5fr) repeat(3,minmax(135px,.65fr)) auto;gap:10px}
 .historyList{display:grid;gap:10px;padding:14px}
 .historyItem{border:1px solid var(--border);border-radius:16px;background:#0d1117;padding:13px;display:grid;grid-template-columns:1fr auto;gap:12px;align-items:center}
 .historyTitle{font-weight:900}.historyMeta{font-size:.78rem;color:var(--muted);margin-top:4px}.historyProducts{font-size:.78rem;color:#dce3ec;margin-top:5px}
-.historyActions{display:flex;gap:7px;flex-wrap:wrap;justify-content:flex-end}.mini{border:1px solid var(--border);background:var(--soft);color:var(--text);border-radius:10px;padding:8px 10px;font-size:.76rem;font-weight:800}.mini.ok{background:var(--brand);color:#111827;border-color:transparent}.mini.reopen{color:var(--brand)}.statusBadge{display:inline-flex;padding:4px 8px;border-radius:999px;font-size:.68rem;font-weight:900;margin-inline-start:6px}.statusBadge.pending{background:#3a2b12;color:#fbbf24}.statusBadge.done{background:#24310f;color:#bef264}
+.historyActions{display:flex;gap:7px;flex-wrap:wrap;justify-content:flex-end}.mini{border:1px solid var(--border);background:var(--soft);color:var(--text);border-radius:10px;padding:8px 10px;font-size:.76rem;font-weight:800}.mini.ok{background:var(--brand);color:#111827;border-color:transparent}.mini.reopen{color:var(--brand)}.mini.delete{color:#ffb4b4;border-color:rgba(239,68,68,.32);background:rgba(239,68,68,.08)}.statusBadge{display:inline-flex;padding:4px 8px;border-radius:999px;font-size:.68rem;font-weight:900;margin-inline-start:6px}.statusBadge.pending{background:#3a2b12;color:#fbbf24}.statusBadge.done{background:#24310f;color:#bef264}
 .empty{padding:55px 20px;text-align:center;color:var(--muted)}
 .mobileBar{display:none}.toast{position:fixed;left:50%;bottom:22px;transform:translateX(-50%) translateY(18px);background:#090b10;border:1px solid rgba(174,211,73,.28);color:#fff;border-radius:999px;padding:9px 14px;font-weight:800;font-size:.82rem;opacity:0;pointer-events:none;transition:.2s;z-index:9999}.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
 .authOverlay{position:fixed;inset:0;background:#0f1117;z-index:10000;display:grid;place-items:center;padding:18px}.authOverlay.hidden{display:none}.authCard{width:min(420px,100%);background:#11151c;border:1px solid var(--border);border-radius:24px;padding:22px;box-shadow:var(--shadow)}.authCard .mark{margin:auto auto 12px}.authCard h2{text-align:center}.authCard p{text-align:center;color:var(--muted);font-size:.82rem;margin:5px 0 16px}.authCard .field{margin-top:10px}.authError{color:#fca5a5;font-size:.78rem;margin-top:9px;min-height:20px;text-align:center}
 .loading{opacity:.65;pointer-events:none}
 @media(max-width:920px){body{padding:11px}.layout{grid-template-columns:1fr}.previewWrap{position:static}}
-@media(max-width:760px){.itemGrid{grid-template-columns:1fr 1fr}.itemGrid .prod,.itemGrid .details{grid-column:1/-1}.historyToolbar{grid-template-columns:1fr 130px}.historyToolbar .refresh{grid-column:1/-1}}
-@media(max-width:640px){body{padding:8px 8px 92px}.grid{grid-template-columns:1fr}.full{grid-column:auto}.top{align-items:flex-start}.brand h1{font-size:.96rem}.brand p{font-size:.68rem}.chip,.userChip{font-size:.62rem}.card,.previewShell,.historyCard{border-radius:20px}.cardHead{padding:15px 14px 11px}.cardBody{padding:14px}.invoice{padding:16px;border-radius:14px;min-height:0}.row{grid-template-columns:92px 1fr;font-size:.77rem}.productsHeader,.productLine{grid-template-columns:1.35fr .45fr .7fr .75fr;font-size:.7rem}.previewActions{display:none}.saveBar{grid-template-columns:1fr 1fr}.historyItem{grid-template-columns:1fr}.historyActions{justify-content:flex-start}.mobileBar{display:grid;grid-template-columns:1.1fr .9fr;gap:8px;position:fixed;left:0;right:0;bottom:0;padding:9px 10px calc(9px + env(safe-area-inset-bottom));background:rgba(15,17,23,.95);backdrop-filter:blur(16px);border-top:1px solid var(--border);z-index:5000}.mobileBar .btn{min-height:54px}}
+@media(max-width:760px){.itemGrid{grid-template-columns:1fr 1fr}.itemGrid .prod,.itemGrid .details{grid-column:1/-1}.historyToolbar{grid-template-columns:1fr 1fr}.historyToolbar input{grid-column:1/-1}.historyToolbar .refresh{grid-column:1/-1}}
+@media(max-width:640px){body{padding:8px 8px 92px}.grid{grid-template-columns:1fr}.full{grid-column:auto}.top{align-items:flex-start}.brand h1{font-size:.96rem}.brand p{font-size:.68rem}.chip,.userChip{font-size:.62rem}.card,.previewShell,.historyCard{border-radius:20px}.cardHead{padding:15px 14px 11px}.cardBody{padding:14px}.invoice{padding:16px;border-radius:14px;min-height:0}.row{grid-template-columns:92px 1fr;font-size:.77rem}.productsHeader,.productLine{grid-template-columns:1.35fr .45fr .7fr .75fr;font-size:.7rem}.previewActions{display:none}.saveBar{grid-template-columns:1fr 1fr}.historyItem{grid-template-columns:1fr}.historyActions{justify-content:flex-start}.mobileBar{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;position:fixed;left:0;right:0;bottom:0;padding:9px 10px calc(9px + env(safe-area-inset-bottom));background:rgba(15,17,23,.95);backdrop-filter:blur(16px);border-top:1px solid var(--border);z-index:5000}.mobileBar .btn{min-height:54px}}
 @media print{@page{size:A4;margin:14mm}html,body{background:#fff!important;padding:0!important;margin:0!important}body *{visibility:hidden!important}#printInvoice,#printInvoice *{visibility:visible!important}#printInvoice{position:absolute!important;inset:0!important;width:100%!important;min-height:auto!important;box-shadow:none!important;border-radius:0!important;padding:0!important}}
 </style>
 </head>
@@ -155,7 +155,21 @@ input,select{min-height:48px}textarea{min-height:86px;resize:vertical}input:focu
 <div class="cardHead"><div><h2>سجل الفواتير</h2><p>كل الفواتير المحفوظة في Supabase تظهر هنا لكل المستخدمين المسجلين.</p></div></div>
 <div class="historyToolbar">
 <input id="historySearch" placeholder="بحث بالاسم، الرقم، المنتج أو رقم الفاتورة">
-<select id="historyFilter"><option value="all">الكل</option><option value="pending">قيد التنفيذ</option><option value="done">تم الإنجاز</option></select>
+<select id="historyFilter">
+  <option value="all">كل الحالات</option>
+  <option value="pending">قيد التنفيذ</option>
+  <option value="done">تم الإنجاز</option>
+</select>
+<select id="historyPeriod">
+  <option value="all">كل التواريخ</option>
+  <option value="today">اليوم</option>
+  <option value="week">هذا الأسبوع</option>
+  <option value="month">هذا الشهر</option>
+</select>
+<select id="historySort">
+  <option value="newest">الأحدث أولاً</option>
+  <option value="oldest">الأقدم أولاً</option>
+</select>
 <button class="btn secondary refresh" id="refreshBtn">تحديث السجل</button>
 </div>
 <div class="historyList" id="historyList"><div class="empty">جاري تحميل الفواتير...</div></div>
@@ -163,7 +177,11 @@ input,select{min-height:48px}textarea{min-height:86px;resize:vertical}input:focu
 </section>
 </main>
 
-<div class="mobileBar"><button class="btn save" type="button" id="saveMobile">حفظ</button><button class="btn wa" type="button" id="waMobile">واتساب</button></div>
+<div class="mobileBar">
+  <button class="btn save" type="button" id="saveMobile">حفظ</button>
+  <button class="btn wa" type="button" id="waMobile">واتساب</button>
+  <button class="btn print" type="button" id="printMobile">طباعة</button>
+</div>
 <div class="toast" id="toast"></div>
 
 <script>
@@ -175,12 +193,34 @@ const sb=window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
 const $=id=>document.getElementById(id);
 
 const base={name:$("name"),phone:$("phone"),address:$("address"),notes:$("notes")};
-let items=[],invoiceId="",recordId=null,status="pending",currentUser=null,dirty=true,historyRows=[];
+let items=[],invoiceId="",recordId=null,status="pending",currentUser=null,dirty=true,historyRows=[],recordCreatedAt=null;
 
 function esc(s){return String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#039;"}[c]))}
 function money(v){const n=Number(v||0);return `${Math.round(Number.isFinite(n)?n:0).toLocaleString("en-US")} د.ع`}
 function txt(v){const s=String(v??"").trim();return s||"—"}
-function now(){return new Intl.DateTimeFormat("ar-IQ",{year:"numeric",month:"2-digit",day:"2-digit",hour:"2-digit",minute:"2-digit"}).format(new Date())}
+function formatDateTime(value){
+ const d=value?new Date(value):new Date();
+ return new Intl.DateTimeFormat("ar-IQ",{year:"numeric",month:"2-digit",day:"2-digit",hour:"2-digit",minute:"2-digit"}).format(d);
+}
+function now(){return formatDateTime(new Date())}
+function invoiceDateText(){return formatDateTime(recordCreatedAt||new Date())}
+function dateOnly(value){
+ const d=new Date(value);
+ return new Intl.DateTimeFormat("ar-IQ",{year:"numeric",month:"2-digit",day:"2-digit"}).format(d);
+}
+function startOfToday(){
+ const d=new Date(); d.setHours(0,0,0,0); return d;
+}
+function startOfWeek(){
+ const d=startOfToday();
+ const day=d.getDay(); // Sunday=0 ... Saturday=6
+ const diff=(day+1)%7; // Iraq-style week starts Saturday
+ d.setDate(d.getDate()-diff);
+ return d;
+}
+function startOfMonth(){
+ const d=new Date(); d.setDate(1); d.setHours(0,0,0,0); return d;
+}
 function makeInvoiceNumber(){
  const d=new Date(),stamp=`${d.getFullYear()}${String(d.getMonth()+1).padStart(2,"0")}${String(d.getDate()).padStart(2,"0")}-${String(d.getHours()).padStart(2,"0")}${String(d.getMinutes()).padStart(2,"0")}${String(d.getSeconds()).padStart(2,"0")}`;
  return `RL-${stamp}-${Math.random().toString(36).slice(2,6).toUpperCase()}`;
@@ -220,17 +260,17 @@ function updateStatusUI(){
 
 function renderPreview(){
  $("pName").textContent=txt(base.name.value);$("pPhone").textContent=txt(base.phone.value);$("pAddress").textContent=txt(base.address.value);
- $("pNotes").textContent=base.notes.value.trim()||"لا توجد ملاحظات.";$("pId").textContent=invoiceId;$("invoiceChip").textContent=invoiceId;$("pDate").textContent=now();$("pTotal").textContent=money(total());
+ $("pNotes").textContent=base.notes.value.trim()||"لا توجد ملاحظات.";$("pId").textContent=invoiceId;$("invoiceChip").textContent=invoiceId;$("pDate").textContent=invoiceDateText();$("pTotal").textContent=money(total());
  const p=$("pProducts");p.innerHTML="";
  items.forEach(i=>{const row=document.createElement("div");row.className="productLine";row.innerHTML=`<div class="name">${esc(txt(i.product))}${i.details.trim()?`<span class="sub">${esc(i.details)}</span>`:""}</div><div>${i.qty||1}</div><div>${esc(txt(i.color))}</div><div>${money(i.price)}</div>`;p.appendChild(row)});
  updateStatusUI();
  saveDraft();
 }
 function update(){renderPreview()}
-function saveDraft(){localStorage.setItem(DRAFT_KEY,JSON.stringify({recordId,invoiceId,status,base:Object.fromEntries(Object.entries(base).map(([k,e])=>[k,e.value])),items}))}
+function saveDraft(){localStorage.setItem(DRAFT_KEY,JSON.stringify({recordId,invoiceId,status,recordCreatedAt,base:Object.fromEntries(Object.entries(base).map(([k,e])=>[k,e.value])),items}))}
 
 function message(){
- const lines=["RAVEN LAB — فاتورة طلب","====================",`رقم الفاتورة: ${invoiceId}`,`الحالة: ${status==="done"?"تم الإنجاز":"قيد التنفيذ"}`,`التاريخ: ${now()}`,"",`الاسم: ${txt(base.name.value)}`,`الرقم: ${txt(base.phone.value)}`,`العنوان: ${txt(base.address.value)}`,"","المنتجات:"];
+ const lines=["RAVEN LAB — فاتورة طلب","====================",`رقم الفاتورة: ${invoiceId}`,`الحالة: ${status==="done"?"تم الإنجاز":"قيد التنفيذ"}`,`التاريخ: ${invoiceDateText()}`,"",`الاسم: ${txt(base.name.value)}`,`الرقم: ${txt(base.phone.value)}`,`العنوان: ${txt(base.address.value)}`,"","المنتجات:"];
  items.forEach((i,n)=>{lines.push(`${n+1}) ${txt(i.product)} — العدد: ${i.qty||1} — اللون: ${txt(i.color)} — السعر: ${money(i.price)}`);if(i.details.trim())lines.push(`   التفاصيل: ${i.details.trim()}`)});
  lines.push("",`ملاحظات: ${base.notes.value.trim()||"لا توجد"}`,`السعر الإجمالي: ${money(total())}`,"====================");
  return lines.join("\n");
@@ -266,6 +306,7 @@ async function saveInvoice(showMessage=true){
    if(result.error) throw result.error;
    recordId=result.data.id;
    status=result.data.status;
+   recordCreatedAt=result.data.created_at||recordCreatedAt||new Date().toISOString();
    setDirty(false);update();await loadHistory(false);
    if(showMessage) showToast("تم حفظ الفاتورة في Supabase");
    return true;
@@ -289,14 +330,14 @@ async function sendWA(){
 }
 function clearEditor(confirmFirst=true){
  if(confirmFirst && !confirm("إنشاء فاتورة جديدة ومسح البيانات الحالية؟"))return;
- Object.values(base).forEach(e=>e.value="");items=[newItem()];invoiceId=makeInvoiceNumber();recordId=null;status="pending";localStorage.removeItem(DRAFT_KEY);renderItems();setDirty(true);update();base.name.focus();
+ Object.values(base).forEach(e=>e.value="");items=[newItem()];invoiceId=makeInvoiceNumber();recordId=null;status="pending";recordCreatedAt=new Date().toISOString();localStorage.removeItem(DRAFT_KEY);renderItems();setDirty(true);update();base.name.focus();
 }
 function loadDraft(){
  try{
   const s=JSON.parse(localStorage.getItem(DRAFT_KEY)||"{}");
   Object.entries(base).forEach(([k,e])=>{if(s.base?.[k]!=null)e.value=s.base[k]});
-  invoiceId=s.invoiceId||makeInvoiceNumber();recordId=s.recordId||null;status=s.status||"pending";items=Array.isArray(s.items)&&s.items.length?s.items.map(newItem):[newItem()];
- }catch{invoiceId=makeInvoiceNumber();items=[newItem()]}
+  invoiceId=s.invoiceId||makeInvoiceNumber();recordId=s.recordId||null;status=s.status||"pending";recordCreatedAt=s.recordCreatedAt||new Date().toISOString();items=Array.isArray(s.items)&&s.items.length?s.items.map(newItem):[newItem()];
+ }catch{invoiceId=makeInvoiceNumber();recordCreatedAt=new Date().toISOString();items=[newItem()]}
  renderItems();setDirty(true);update();
 }
 
@@ -308,23 +349,57 @@ async function loadHistory(show=true){
 }
 
 function rowText(r){return [r.invoice_number,r.customer_name,r.customer_phone,r.customer_address,r.notes,...(Array.isArray(r.items)?r.items.map(i=>`${i.product} ${i.color} ${i.details}`):[])].join(" ").toLowerCase()}
+function isWithinPeriod(r,period){
+ if(period==="all") return true;
+ const d=new Date(r.created_at);
+ if(Number.isNaN(d.getTime())) return false;
+ const start=period==="today"?startOfToday():period==="week"?startOfWeek():startOfMonth();
+ return d>=start;
+}
 function renderHistory(){
- const q=$("historySearch").value.trim().toLowerCase(),filter=$("historyFilter").value,list=$("historyList");
- const rows=historyRows.filter(r=>(filter==="all"||r.status===filter)&&(!q||rowText(r).includes(q)));
+ const q=$("historySearch").value.trim().toLowerCase();
+ const filter=$("historyFilter").value;
+ const period=$("historyPeriod").value;
+ const sort=$("historySort").value;
+ const list=$("historyList");
+
+ let rows=historyRows.filter(r=>
+   (filter==="all"||r.status===filter) &&
+   isWithinPeriod(r,period) &&
+   (!q||rowText(r).includes(q))
+ );
+
+ rows.sort((a,b)=>{
+   const da=new Date(a.created_at).getTime()||0;
+   const db=new Date(b.created_at).getTime()||0;
+   return sort==="oldest"?da-db:db-da;
+ });
+
  if(!rows.length){list.innerHTML='<div class="empty">لا توجد فواتير مطابقة.</div>';return}
  list.innerHTML="";
  rows.forEach(r=>{
   const products=(Array.isArray(r.items)?r.items:[]).map(i=>`${i.product||"منتج"} × ${i.qty||1}`).join(" • ");
   const el=document.createElement("div");el.className="historyItem";
-  el.innerHTML=`<div><div class="historyTitle">${esc(r.invoice_number)} <span class="statusBadge ${r.status}">${r.status==="done"?"تم الإنجاز":"قيد التنفيذ"}</span></div><div class="historyMeta">${esc(r.customer_name||"بدون اسم")} — ${esc(r.customer_phone||"بدون رقم")} — ${money(r.total_price)}</div><div class="historyProducts">${esc(products||"لا توجد منتجات")}</div></div><div class="historyActions"><button class="mini open">فتح</button><button class="mini ${r.status==="done"?"reopen":"ok"} toggle">${r.status==="done"?"إعادة فتح":"تم"}</button></div>`;
+  el.innerHTML=`<div>
+    <div class="historyTitle">${esc(r.invoice_number)} <span class="statusBadge ${r.status}">${r.status==="done"?"تم الإنجاز":"قيد التنفيذ"}</span></div>
+    <div class="historyMeta">${esc(r.customer_name||"بدون اسم")} — ${esc(r.customer_phone||"بدون رقم")} — ${money(r.total_price)}</div>
+    <div class="historyMeta">التاريخ: ${esc(formatDateTime(r.created_at))}</div>
+    <div class="historyProducts">${esc(products||"لا توجد منتجات")}</div>
+  </div>
+  <div class="historyActions">
+    <button class="mini open">فتح</button>
+    <button class="mini ${r.status==="done"?"reopen":"ok"} toggle">${r.status==="done"?"إعادة فتح":"تم"}</button>
+    <button class="mini delete">حذف</button>
+  </div>`;
   el.querySelector(".open").onclick=()=>openInvoice(r);
   el.querySelector(".toggle").onclick=()=>toggleHistoryStatus(r);
+  el.querySelector(".delete").onclick=()=>deleteInvoice(r);
   list.appendChild(el);
  });
 }
 
 function openInvoice(r){
- recordId=r.id;invoiceId=r.invoice_number;status=r.status||"pending";base.name.value=r.customer_name||"";base.phone.value=r.customer_phone||"";base.address.value=r.customer_address||"";base.notes.value=r.notes||"";items=(Array.isArray(r.items)&&r.items.length?r.items:[newItem()]).map(newItem);renderItems();setDirty(false);update();showView("editorView");window.scrollTo({top:0,behavior:"smooth"})
+ recordId=r.id;invoiceId=r.invoice_number;status=r.status||"pending";recordCreatedAt=r.created_at||new Date().toISOString();base.name.value=r.customer_name||"";base.phone.value=r.customer_phone||"";base.address.value=r.customer_address||"";base.notes.value=r.notes||"";items=(Array.isArray(r.items)&&r.items.length?r.items:[newItem()]).map(newItem);renderItems();setDirty(false);update();showView("editorView");window.scrollTo({top:0,behavior:"smooth"})
 }
 async function toggleHistoryStatus(r){
  const next=r.status==="done"?"pending":"done";
@@ -332,6 +407,29 @@ async function toggleHistoryStatus(r){
  if(error){showToast("تعذر تحديث الحالة");return}
  if(recordId===r.id){status=next;setDirty(false);update()}
  await loadHistory(false);showToast(next==="done"?"تم الإنجاز":"تمت إعادة الفاتورة");
+}
+
+async function deleteInvoice(r){
+ const password=prompt("لحذف الفاتورة اكتب كلمة المرور:");
+ if(password===null) return;
+ if(password!=="RavenLab"){
+   alert("كلمة المرور غير صحيحة.");
+   return;
+ }
+ if(!confirm(`تأكيد حذف الفاتورة ${r.invoice_number}؟ لا يمكن التراجع عن الحذف.`)) return;
+
+ const {error}=await sb.from("invoices").delete().eq("id",r.id);
+ if(error){
+   console.error(error);
+   showToast("تعذر حذف الفاتورة: "+(error.message||"خطأ"));
+   return;
+ }
+
+ if(recordId===r.id){
+   clearEditor(false);
+ }
+ await loadHistory(false);
+ showToast("تم حذف الفاتورة");
 }
 
 function showView(id){
@@ -354,8 +452,8 @@ async function logout(){await sb.auth.signOut();currentUser=null;$("authOverlay"
 
 Object.values(base).forEach(e=>{e.addEventListener("input",()=>{setDirty();update()});e.addEventListener("change",()=>{setDirty();update()})});
 $("addItemBtn").onclick=()=>{items.push(newItem());renderItems();setDirty();update()};
-$("copyBtn").onclick=copyInvoice;$("newBtn").onclick=()=>clearEditor(true);$("saveBtn").onclick=()=>saveInvoice();$("saveMobile").onclick=()=>saveInvoice();$("doneBtn").onclick=toggleDone;$("waBtn").onclick=sendWA;$("waMobile").onclick=sendWA;$("printBtn").onclick=()=>window.print();
-$("refreshBtn").onclick=()=>loadHistory();$("historySearch").oninput=renderHistory;$("historyFilter").onchange=renderHistory;$("loginBtn").onclick=login;$("logoutBtn").onclick=logout;
+$("copyBtn").onclick=copyInvoice;$("newBtn").onclick=()=>clearEditor(true);$("saveBtn").onclick=()=>saveInvoice();$("saveMobile").onclick=()=>saveInvoice();$("doneBtn").onclick=toggleDone;$("waBtn").onclick=sendWA;$("waMobile").onclick=sendWA;$("printBtn").onclick=()=>window.print();$("printMobile").onclick=()=>window.print();
+$("refreshBtn").onclick=()=>loadHistory();$("historySearch").oninput=renderHistory;$("historyFilter").onchange=renderHistory;$("historyPeriod").onchange=renderHistory;$("historySort").onchange=renderHistory;$("loginBtn").onclick=login;$("logoutBtn").onclick=logout;
 document.querySelectorAll(".tab").forEach(t=>t.onclick=()=>showView(t.dataset.view));
 $("loginPassword").addEventListener("keydown",e=>{if(e.key==="Enter")login()});
 
