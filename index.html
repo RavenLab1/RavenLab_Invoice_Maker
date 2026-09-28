@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#aed349">
-<title>Raven Lab — صانع الفواتير V3.2</title>
+<title>Raven Lab — صانع الفواتير V3.3</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Arabic:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -297,22 +297,49 @@ async function saveInvoice(showMessage=true){
  setBusy(true);
  try{
    const data=payload();
-   let result;
-   if(recordId){
-     result=await sb.from("invoices").update(data).eq("id",recordId).select().single();
+
+   // V3.3: نحفظ دائماً حسب invoice_number بدلاً من .single()
+   // هذا يمنع خطأ:
+   // Cannot coerce the result to a single JSON object
+   const {error:saveError}=await sb
+     .from("invoices")
+     .upsert(data,{onConflict:"invoice_number"});
+
+   if(saveError) throw saveError;
+
+   // محاولة جلب بيانات الصف بعد الحفظ، لكن فشل القراءة لا يلغي نجاح الحفظ.
+   const {data:rows,error:readBackError}=await sb
+     .from("invoices")
+     .select("id,status,created_at")
+     .eq("invoice_number",invoiceId)
+     .limit(1);
+
+   if(!readBackError && Array.isArray(rows) && rows.length){
+     recordId=rows[0].id||recordId;
+     status=rows[0].status||status;
+     recordCreatedAt=rows[0].created_at||recordCreatedAt||new Date().toISOString();
    }else{
-     result=await sb.from("invoices").insert(data).select().single();
+     recordCreatedAt=recordCreatedAt||new Date().toISOString();
+     if(readBackError) console.warn("Invoice saved, read-back skipped:",readBackError);
    }
-   if(result.error) throw result.error;
-   recordId=result.data.id;
-   status=result.data.status;
-   recordCreatedAt=result.data.created_at||recordCreatedAt||new Date().toISOString();
-   setDirty(false);update();await loadHistory(false);
+
+   setDirty(false);
+   update();
+   await loadHistory(false);
+
    if(showMessage) showToast("تم حفظ الفاتورة في Supabase");
    return true;
  }catch(err){
-   console.error(err);showToast("فشل الحفظ: "+(err.message||"خطأ غير معروف"));return false;
- }finally{setBusy(false)}
+   console.error(err);
+   let msg=err?.message||"خطأ غير معروف";
+   if(String(msg).includes("row-level security")){
+     msg="صلاحيات Supabase تمنع الحفظ. شغّل ملف إصلاح الصلاحيات.";
+   }
+   showToast("فشل الحفظ: "+msg);
+   return false;
+ }finally{
+   setBusy(false);
+ }
 }
 
 async function toggleDone(){
