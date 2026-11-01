@@ -194,6 +194,7 @@ button,input,textarea{font:inherit}button{cursor:pointer}.app{width:min(1120px,1
       <button class="btn secondary" id="selectRangeBtn" type="button">تحديد الفترة</button>
       <button class="btn print" id="exportA5Btn" type="button">تصدير A5</button>
     </div>
+    <div class="hint" id="rangeHint" style="padding:0 14px 10px;color:var(--muted)">اختر من تاريخ وإلى تاريخ، ثم اضغط «تحديد الفترة».</div>
 
     <div class="exportBar">
       <label style="display:flex;align-items:center;gap:8px;font-size:.78rem">
@@ -283,49 +284,118 @@ function sendWA(){window.open(`https://wa.me/${RAVEN_WHATSAPP}?text=${encodeURIC
 function clearEditor(confirmFirst=true){if(confirmFirst&&!confirm("إنشاء فاتورة جديدة؟"))return;Object.values(f).forEach(e=>e.value="");f.delivery.value="5000";recordId=null;invoiceId=makeInvoiceNumber();recordCreatedAt=new Date().toISOString();setDirty(true);update();f.name.focus()}
 async function loadHistory(show=true){if(show)$("historyList").innerHTML='<div class="empty">جاري التحميل...</div>';try{const {data,error}=await sb.from("invoices").select("*").order("created_at",{ascending:false}).limit(300);if(error)throw error;historyRows=data||[];selectedHistoryIds=new Set([...selectedHistoryIds].filter(id=>historyRows.some(r=>r.id===id)));renderHistory()}catch(err){$("historyList").innerHTML='<div class="empty">تعذر تحميل السجل</div>'}}
 
-function dateInputValue(value){
-  const d=new Date(value);
+function localDateKey(value){
+  const d = new Date(value);
   if(Number.isNaN(d.getTime())) return "";
-  const y=d.getFullYear(),m=String(d.getMonth()+1).padStart(2,"0"),day=String(d.getDate()).padStart(2,"0");
+  const y = d.getFullYear();
+  const m = String(d.getMonth()+1).padStart(2,"0");
+  const day = String(d.getDate()).padStart(2,"0");
   return `${y}-${m}-${day}`;
 }
+
 function dateShort(value){
   const d=new Date(value);
   if(Number.isNaN(d.getTime())) return "—";
   return new Intl.DateTimeFormat("ar-IQ",{year:"numeric",month:"2-digit",day:"2-digit"}).format(d);
 }
+
 function rowMatchesSearch(r){
   const q=$("historySearch").value.trim().toLowerCase();
   return !q||[r.invoice_number,r.customer_name,r.customer_phone].join(" ").toLowerCase().includes(q);
 }
+
+function getRangeBounds(){
+  const fromValue=$("historyFrom").value;
+  const toValue=$("historyTo").value;
+
+  let from=null,to=null;
+
+  if(fromValue){
+    const [y,m,d]=fromValue.split("-").map(Number);
+    from=new Date(y,m-1,d,0,0,0,0);
+  }
+
+  if(toValue){
+    const [y,m,d]=toValue.split("-").map(Number);
+    to=new Date(y,m-1,d,23,59,59,999);
+  }
+
+  return {from,to,fromValue,toValue};
+}
+
 function rowWithinSelectedDates(r){
-  const from=$("historyFrom").value;
-  const to=$("historyTo").value;
-  const d=dateInputValue(r.created_at);
-  if(from && d<from) return false;
-  if(to && d>to) return false;
+  const {from,to}=getRangeBounds();
+  const created=new Date(r.created_at);
+  if(Number.isNaN(created.getTime())) return false;
+
+  if(from && created < from) return false;
+  if(to && created > to) return false;
+
   return true;
 }
+
 function visibleHistoryRows(){
   return historyRows.filter(r=>rowMatchesSearch(r)&&rowWithinSelectedDates(r));
 }
+
 function updateSelectedCount(){
   $("selectedCount").textContent=selectedHistoryIds.size;
   const visible=visibleHistoryRows();
   $("selectAllVisible").checked=!!visible.length && visible.every(r=>selectedHistoryIds.has(r.id));
 }
+
 function toggleHistorySelection(id,checked){
   if(checked) selectedHistoryIds.add(id);
   else selectedHistoryIds.delete(id);
   updateSelectedCount();
 }
+
+
+function updateRangeHint(){
+  const hint=$("rangeHint");
+  if(!hint) return;
+  const {fromValue,toValue}=getRangeBounds();
+
+  if(!fromValue && !toValue){
+    hint.textContent='اختر من تاريخ وإلى تاريخ، ثم اضغط «تحديد الفترة».';
+    return;
+  }
+
+  if(fromValue && toValue && fromValue > toValue){
+    hint.textContent='⚠️ تاريخ البداية أكبر من تاريخ النهاية.';
+    return;
+  }
+
+  const count=historyRows.filter(r=>rowWithinSelectedDates(r)).length;
+  hint.textContent=`الفواتير الموجودة ضمن الفترة الحالية: ${count}`;
+}
+
 function selectRangeRows(){
-  const from=$("historyFrom").value,to=$("historyTo").value;
-  if(!from&&!to){showToast("حدد تاريخ البداية أو النهاية");return}
+  const {fromValue,toValue}=getRangeBounds();
+
+  if(!fromValue && !toValue){
+    showToast("حدد تاريخ البداية أو النهاية");
+    return;
+  }
+
+  if(fromValue && toValue && fromValue > toValue){
+    showToast("تاريخ البداية يجب أن يكون قبل تاريخ النهاية");
+    return;
+  }
+
+  const matching = historyRows.filter(r=>rowWithinSelectedDates(r));
+
   selectedHistoryIds.clear();
-  historyRows.filter(r=>rowWithinSelectedDates(r)).forEach(r=>selectedHistoryIds.add(r.id));
+  matching.forEach(r=>selectedHistoryIds.add(r.id));
+
   renderHistory();
-  showToast(`تم تحديد ${selectedHistoryIds.size} فاتورة`);
+
+  if(!matching.length){
+    showToast("لا توجد فواتير ضمن هذه الفترة");
+    return;
+  }
+
+  showToast(`تم تحديد ${matching.length} فاتورة ضمن الفترة`);
 }
 function fitExportRows(count){
   const sheet=$("historyExportSheet");
@@ -352,7 +422,9 @@ function exportSelectedA5(){
   $("exportTotal").textContent=money(rows.reduce((s,r)=>s+Number(r.total_price||0),0));
 
   const from=$("historyFrom").value,to=$("historyTo").value;
-  $("exportRangeText").textContent=(from||to)?`الفترة: ${from||"—"} → ${to||"—"}`:"فواتير محددة";
+  $("exportRangeText").textContent=(from||to)
+    ? `الفترة: ${from ? dateShort(new Date(from+"T00:00:00")) : "—"} ← ${to ? dateShort(new Date(to+"T00:00:00")) : "—"}`
+    : "فواتير محددة";
   $("exportGeneratedAt").textContent=`تاريخ التصدير: ${dateShort(new Date())}`;
 
   fitExportRows(rows.length);
@@ -368,6 +440,7 @@ function exportSelectedA5(){
 }
 
 function renderHistory(){
+  updateRangeHint();
   const rows=visibleHistoryRows();
   if(!rows.length){
     $("historyList").innerHTML='<div class="empty">لا توجد فواتير مطابقة.</div>';
@@ -400,7 +473,7 @@ async function startApp(){$("authOverlay").classList.add("hidden");$("userChip")
 async function logout(){await sb.auth.signOut();location.reload()}
 Object.values(f).forEach(e=>{e.addEventListener("input",()=>{setDirty(true);update()});e.addEventListener("change",()=>{setDirty(true);update()})});
 document.querySelectorAll(".tab").forEach(t=>t.onclick=()=>showView(t.dataset.view));
-$("saveBtn").onclick=saveInvoice;$("newBtn").onclick=()=>clearEditor(true);$("copyBtn").onclick=copyInvoice;$("waBtn").onclick=sendWA;$("waPreviewBtn").onclick=sendWA;$("printBtn").onclick=()=>window.print();$("refreshBtn").onclick=()=>loadHistory();$("historySearch").oninput=renderHistory;$("historyFrom").onchange=renderHistory;$("historyTo").onchange=renderHistory;$("selectRangeBtn").onclick=selectRangeRows;$("exportA5Btn").onclick=exportSelectedA5;$("selectAllVisible").onchange=e=>{const rows=visibleHistoryRows();rows.forEach(r=>e.target.checked?selectedHistoryIds.add(r.id):selectedHistoryIds.delete(r.id));renderHistory()};$("loginBtn").onclick=login;$("loginPassword").addEventListener("keydown",e=>{if(e.key==="Enter")login()});$("logoutBtn").onclick=logout;
+$("saveBtn").onclick=saveInvoice;$("newBtn").onclick=()=>clearEditor(true);$("copyBtn").onclick=copyInvoice;$("waBtn").onclick=sendWA;$("waPreviewBtn").onclick=sendWA;$("printBtn").onclick=()=>window.print();$("refreshBtn").onclick=()=>loadHistory();$("historySearch").oninput=renderHistory;$("historyFrom").onchange=()=>{renderHistory();updateRangeHint()};$("historyTo").onchange=()=>{renderHistory();updateRangeHint()};$("selectRangeBtn").onclick=selectRangeRows;$("exportA5Btn").onclick=exportSelectedA5;$("selectAllVisible").onchange=e=>{const rows=visibleHistoryRows();rows.forEach(r=>e.target.checked?selectedHistoryIds.add(r.id):selectedHistoryIds.delete(r.id));renderHistory()};$("loginBtn").onclick=login;$("loginPassword").addEventListener("keydown",e=>{if(e.key==="Enter")login()});$("logoutBtn").onclick=logout;
 sb.auth.getSession().then(({data})=>{if(data.session){currentUser=data.session.user;startApp()}});
 </script>
 </body>
