@@ -143,6 +143,12 @@ button,input,textarea{font:inherit}button{cursor:pointer}.app{width:min(1120px,1
   body.export-print-mode #printInvoice{display:none!important}
 }
 
+
+@media print{
+  #printInvoice #pDetails,
+  #printInvoice #pNotes{font-size:10pt!important;line-height:1.35!important}
+}
+
 </style>
 </head>
 <body>
@@ -155,11 +161,13 @@ button,input,textarea{font:inherit}button{cursor:pointer}.app{width:min(1120px,1
 <div class="field"><label>الاسم</label><input id="name" placeholder="اسم الزبون / الشركة"></div>
 <div class="field"><label>رقم الهاتف</label><input id="phone" inputmode="tel" placeholder="07XXXXXXXXX"></div>
 <div class="field full"><label>العنوان</label><textarea id="address" placeholder="المحافظة، المنطقة، أقرب نقطة دالة"></textarea></div>
+<div class="field full"><label>تفاصيل الطلب</label><textarea id="details" placeholder="مثال: 100 ميدالية جيم، وجه واحد، اللون أسود وأخضر"></textarea></div>
+<div class="field full"><label>ملاحظات</label><textarea id="notes" placeholder="أي ملاحظة إضافية على الطلب أو التسليم"></textarea></div>
 <div class="field"><label>سعر الطلب</label><input id="price" type="number" min="0" step="250" inputmode="numeric" placeholder="0"></div>
 <div class="field"><label>سعر التوصيل</label><input id="delivery" type="number" min="0" step="500" inputmode="numeric" value="5000"></div>
 </div>
 <div class="actions"><button class="btn save" id="saveBtn" type="button">حفظ الفاتورة</button><button class="btn danger" id="newBtn" type="button">فاتورة جديدة</button><button class="btn secondary" id="copyBtn" type="button">نسخ نص الفاتورة</button><button class="btn wa" id="waBtn" type="button">واتساب</button></div></div></div>
-<div class="previewWrap"><div class="previewShell"><div id="printInvoice" class="invoice"><div class="invHead"><div class="invBrand"><div class="invMark">R</div><div><strong>RavenLab</strong><span>Design & Manufacturing Studio</span></div></div><div class="meta"><b id="pId">—</b><span id="pDate">—</span></div></div><div class="invTitle">فاتورة طلب</div><div class="box"><div class="row"><div class="key">الاسم</div><div class="val" id="pName">—</div></div><div class="row"><div class="key">رقم الهاتف</div><div class="val" id="pPhone">—</div></div><div class="row"><div class="key">العنوان</div><div class="val" id="pAddress">—</div></div></div><div class="priceRows"><div class="priceRow"><span>سعر الطلب</span><b id="pPrice">0 د.ع</b></div><div class="priceRow"><span>سعر التوصيل</span><b id="pDelivery">0 د.ع</b></div><div class="priceRow total"><span>الإجمالي</span><b id="pTotal">0 د.ع</b></div></div><div class="footer"><span>RavenLab</span><span>شكراً لثقتكم بنا</span></div></div><div class="previewActions"><button class="btn print" id="printBtn" type="button">طباعة / PDF</button><button class="btn wa" id="waPreviewBtn" type="button">إرسال واتساب</button></div><div class="saveState" id="saveState">لم تُحفظ التغييرات بعد</div></div></div>
+<div class="previewWrap"><div class="previewShell"><div id="printInvoice" class="invoice"><div class="invHead"><div class="invBrand"><div class="invMark">R</div><div><strong>RavenLab</strong><span>Design & Manufacturing Studio</span></div></div><div class="meta"><b id="pId">—</b><span id="pDate">—</span></div></div><div class="invTitle">فاتورة طلب</div><div class="box"><div class="row"><div class="key">الاسم</div><div class="val" id="pName">—</div></div><div class="row"><div class="key">رقم الهاتف</div><div class="val" id="pPhone">—</div></div><div class="row"><div class="key">العنوان</div><div class="val" id="pAddress">—</div></div><div class="row"><div class="key">تفاصيل الطلب</div><div class="val" id="pDetails">—</div></div><div class="row"><div class="key">ملاحظات</div><div class="val" id="pNotes">—</div></div></div><div class="priceRows"><div class="priceRow"><span>سعر الطلب</span><b id="pPrice">0 د.ع</b></div><div class="priceRow"><span>سعر التوصيل</span><b id="pDelivery">0 د.ع</b></div><div class="priceRow total"><span>الإجمالي</span><b id="pTotal">0 د.ع</b></div></div><div class="footer"><span>RavenLab</span><span>شكراً لثقتكم بنا</span></div></div><div class="previewActions"><button class="btn print" id="printBtn" type="button">طباعة / PDF</button><button class="btn wa" id="waPreviewBtn" type="button">إرسال واتساب</button></div><div class="saveState" id="saveState">لم تُحفظ التغييرات بعد</div></div></div>
 </div></section>
 
 <section class="view" id="historyView">
@@ -248,7 +256,7 @@ const RAVEN_WHATSAPP="9647773685433";
 const sb=window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
 const $=id=>document.getElementById(id);
 let currentUser=null,recordId=null,invoiceId="",recordCreatedAt=null,dirty=true,historyRows=[],selectedHistoryIds=new Set();
-const f={name:$("name"),phone:$("phone"),address:$("address"),price:$("price"),delivery:$("delivery")};
+const f={name:$("name"),phone:$("phone"),address:$("address"),details:$("details"),notes:$("notes"),price:$("price"),delivery:$("delivery")};
 function money(v){const n=Number(v||0);return `${Math.round(Number.isFinite(n)?n:0).toLocaleString("en-US")} د.ع`}
 function txt(v){const s=String(v??"").trim();return s||"—"}
 function formatDate(value){const d=value?new Date(value):new Date();return new Intl.DateTimeFormat("ar-IQ",{year:"numeric",month:"2-digit",day:"2-digit",hour:"2-digit",minute:"2-digit"}).format(d)}
@@ -256,13 +264,20 @@ function makeInvoiceNumber(){const d=new Date();return `RL-${d.getFullYear()}${S
 function total(){return Math.max(0,Number(f.price.value||0))+Math.max(0,Number(f.delivery.value||0))}
 function setDirty(v=true){dirty=v;$("saveState").textContent=v?"لم تُحفظ التغييرات بعد":"تم الحفظ في Supabase";$("saveState").style.color=v?"#fbbf24":"#bef264"}
 function showToast(t){const e=$("toast");e.textContent=t;e.classList.add("show");clearTimeout(showToast.timer);showToast.timer=setTimeout(()=>e.classList.remove("show"),1700)}
-function update(){$("pName").textContent=txt(f.name.value);$("pPhone").textContent=txt(f.phone.value);$("pAddress").textContent=txt(f.address.value);$("pPrice").textContent=money(f.price.value);$("pDelivery").textContent=money(f.delivery.value);$("pTotal").textContent=money(total());$("pId").textContent=invoiceId;$("invoiceChip").textContent=invoiceId;$("pDate").textContent=formatDate(recordCreatedAt||new Date())}
+function update(){$("pName").textContent=txt(f.name.value);$("pPhone").textContent=txt(f.phone.value);$("pAddress").textContent=txt(f.address.value);$("pDetails").textContent=txt(f.details.value);$("pNotes").textContent=txt(f.notes.value);$("pPrice").textContent=money(f.price.value);$("pDelivery").textContent=money(f.delivery.value);$("pTotal").textContent=money(total());$("pId").textContent=invoiceId;$("invoiceChip").textContent=invoiceId;$("pDate").textContent=formatDate(recordCreatedAt||new Date())}
 function validate(){if(!f.name.value.trim()){showToast("اكتب اسم الزبون");f.name.focus();return false}return true}
-function payload(){const price=Math.max(0,Number(f.price.value||0)),delivery=Math.max(0,Number(f.delivery.value||0));return {invoice_number:invoiceId,customer_name:f.name.value.trim(),customer_phone:f.phone.value.trim(),customer_address:f.address.value.trim(),notes:`DELIVERY:${delivery}`,items:[{product:"الطلب",qty:1,color:"",price,details:""},{product:"التوصيل",qty:1,color:"",price:delivery,details:""}],total_price:price+delivery,status:"pending",completed_at:null,created_by:currentUser.id,updated_at:new Date().toISOString()}}
+function payload(){const price=Math.max(0,Number(f.price.value||0)),delivery=Math.max(0,Number(f.delivery.value||0));return {invoice_number:invoiceId,customer_name:f.name.value.trim(),customer_phone:f.phone.value.trim(),customer_address:f.address.value.trim(),notes:`DELIVERY:${delivery}\nDETAILS:${f.details.value.trim()}\nNOTES:${f.notes.value.trim()}`,items:[{product:"الطلب",qty:1,color:"",price,details:f.details.value.trim()},{product:"التوصيل",qty:1,color:"",price:delivery,details:""}],total_price:price+delivery,status:"pending",completed_at:null,created_by:currentUser.id,updated_at:new Date().toISOString()}}
 async function saveInvoice(){if(!currentUser||!validate())return false;try{const {error}=await sb.from("invoices").upsert(payload(),{onConflict:"invoice_number"});if(error)throw error;const {data}=await sb.from("invoices").select("id,created_at").eq("invoice_number",invoiceId).limit(1);if(data&&data.length){recordId=data[0].id;recordCreatedAt=data[0].created_at||recordCreatedAt}setDirty(false);update();await loadHistory(false);showToast("تم حفظ الفاتورة");return true}catch(err){console.error(err);showToast("فشل الحفظ: "+(err.message||"خطأ"));return false}}
 function readDelivery(r){if(Array.isArray(r.items)){const row=r.items.find(i=>i.product==="التوصيل");if(row)return Number(row.price||0)}const m=String(r.notes||"").match(/DELIVERY:(\d+(?:\.\d+)?)/);return m?Number(m[1]):0}
 function readPrice(r){const delivery=readDelivery(r);return Math.max(0,Number(r.total_price||0)-delivery)}
-function message(){return ["RAVENLAB — فاتورة طلب","====================",`رقم الفاتورة: ${invoiceId}`,`التاريخ: ${formatDate(recordCreatedAt||new Date())}`,"",`الاسم: ${txt(f.name.value)}`,`رقم الهاتف: ${txt(f.phone.value)}`,`العنوان: ${txt(f.address.value)}`,"",`سعر الطلب: ${money(f.price.value)}`,`سعر التوصيل: ${money(f.delivery.value)}`,`الإجمالي: ${money(total())}`].join("\n")}
+function readDetails(r){
+  if(Array.isArray(r.items)){const row=r.items.find(i=>i.product==="الطلب");if(row&&row.details)return String(row.details)}
+  const m=String(r.notes||"").match(/DETAILS:([^\n]*)/);return m?m[1]:""
+}
+function readNotes(r){
+  const m=String(r.notes||"").match(/NOTES:([\s\S]*)$/);return m?m[1].trim():""
+}
+function message(){return ["RAVENLAB — فاتورة طلب","====================",`رقم الفاتورة: ${invoiceId}`,`التاريخ: ${formatDate(recordCreatedAt||new Date())}`,"",`الاسم: ${txt(f.name.value)}`,`رقم الهاتف: ${txt(f.phone.value)}`,`العنوان: ${txt(f.address.value)}`,`تفاصيل الطلب: ${txt(f.details.value)}`,`ملاحظات: ${txt(f.notes.value)}`,"",`سعر الطلب: ${money(f.price.value)}`,`سعر التوصيل: ${money(f.delivery.value)}`,`الإجمالي: ${money(total())}`].join("\n")}
 async function copyInvoice(){try{await navigator.clipboard.writeText(message())}catch{const a=document.createElement("textarea");a.value=message();document.body.appendChild(a);a.select();document.execCommand("copy");a.remove()}showToast("تم نسخ الفاتورة")}
 function sendWA(){window.open(`https://wa.me/${RAVEN_WHATSAPP}?text=${encodeURIComponent(message())}`,"_blank","noopener")}
 function clearEditor(confirmFirst=true){if(confirmFirst&&!confirm("إنشاء فاتورة جديدة؟"))return;Object.values(f).forEach(e=>e.value="");f.delivery.value="5000";recordId=null;invoiceId=makeInvoiceNumber();recordCreatedAt=new Date().toISOString();setDirty(true);update();f.name.focus()}
@@ -378,7 +393,7 @@ function renderHistory(){
   });
   updateSelectedCount();
 }
-function openInvoice(r){recordId=r.id;invoiceId=r.invoice_number;recordCreatedAt=r.created_at;f.name.value=r.customer_name||"";f.phone.value=r.customer_phone||"";f.address.value=r.customer_address||"";f.delivery.value=readDelivery(r);f.price.value=readPrice(r);setDirty(false);update();showView("editorView");window.scrollTo({top:0,behavior:"smooth"})}
+function openInvoice(r){recordId=r.id;invoiceId=r.invoice_number;recordCreatedAt=r.created_at;f.name.value=r.customer_name||"";f.phone.value=r.customer_phone||"";f.address.value=r.customer_address||"";f.details.value=readDetails(r);f.notes.value=readNotes(r);f.delivery.value=readDelivery(r);f.price.value=readPrice(r);setDirty(false);update();showView("editorView");window.scrollTo({top:0,behavior:"smooth"})}
 function showView(id){document.querySelectorAll(".view").forEach(v=>v.classList.toggle("active",v.id===id));document.querySelectorAll(".tab").forEach(t=>t.classList.toggle("active",t.dataset.view===id));if(id==="historyView")loadHistory()}
 async function login(){$("authError").textContent="";const {data,error}=await sb.auth.signInWithPassword({email:$("loginEmail").value.trim(),password:$("loginPassword").value});if(error){$("authError").textContent=error.message;return}currentUser=data.user;startApp()}
 async function startApp(){$("authOverlay").classList.add("hidden");$("userChip").textContent=currentUser?.email||"موظف";clearEditor(false);await loadHistory(false)}
